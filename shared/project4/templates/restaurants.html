@@ -1,0 +1,18 @@
+<html>
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<h1>Restaurants</h1>
+
+{% for r in restaurants %}
+	<p>{{ r.name }}</p>		
+	<a href="/restaurant/{{ r.id }}/edit">Edit</a>
+	<a href="/restaurant/{{ r.id }}/delete">Delete</a>
+
+{% endfor %}
+
+</body>
+
+</html>
