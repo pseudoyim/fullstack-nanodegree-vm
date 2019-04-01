@@ -28,7 +28,7 @@ ALTER TABLE authors OWNER TO vagrant;
 -- 'books'
 CREATE TABLE IF NOT EXISTS books (  id SERIAL PRIMARY KEY,
 										title TEXT,
-										author_id TEXT,
+										author_id INTEGER,
 										genre TEXT,
 										pages INTEGER,
 										synopsis TEXT,

@@ -12,12 +12,24 @@
 		<p>{{ i }}</p>
 		{% endfor %}
 
-	<h2>Latest Items</h2>
+	<!-- For the main page (show_catalog)-->
+	{% if main_page %}
+		<h2>Latest Books</h2>
+			
+			{% for i in latest_books %}
+			<p>{{ i[0] }}</p><p id="category">{{ i[1] }}</p>
+			{% endfor %}
+
+	<!-- For showing the items under each genre (genre_items)-->
+	{% else %}
 		
+		<h2>{{ genre }} ({{ count }} items)</h2>
+			
+			{% for i in items %}
+			<p>{{ i[0] }}</p>
+			{% endfor %}
 
-
-
+	{% endif %}
 
 </body>
-
 </html>

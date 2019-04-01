@@ -33,14 +33,49 @@ def get_genres():
     return result
 
 
-def add_post(content):
-    """Add a post to the 'database' with the current timestamp."""
+def get_latest_books():
     db = psycopg2.connect(f"dbname={DBNAME}")
     c = db.cursor()
-    content = bleach.clean(content)
-    c.execute("insert into books values (%s)", (bleach.clean(content),))  # good
-    db.commit()
+    query = '''
+            SELECT title, genre
+            FROM books
+            ORDER BY date_finished DESC;
+            '''
+    c.execute(query)
+    result = c.fetchall()
     db.close()
+    return result
+
+
+def get_genre_items(genre):
+    db = psycopg2.connect(f"dbname={DBNAME}")
+    c = db.cursor()
+    query = f'''
+            SELECT DISTINCT title
+            FROM books
+            WHERE LOWER(genre)='{genre}'
+            ORDER BY title DESC;
+            '''
+    c.execute(query)
+    result = c.fetchall()
+    db.close()
+    return result
+
+
+def get_book_info(book_title):
+    db = psycopg2.connect(f"dbname={DBNAME}")
+    c = db.cursor()
+    query = f'''
+            SELECT title, pages, authors.first_name || ' ' || authors.last_name, synopsis
+            FROM books
+            LEFT JOIN authors
+                ON books.author_id = authors.id
+            WHERE LOWER(title)='{book_title}'
+            '''
+    c.execute(query)
+    result = c.fetchall()
+    db.close()
+    return result
 
 
 if __name__ == '__main__':
