@@ -1,0 +1,51 @@
+2019-04-01 18:26:46.079 EDT [77619] LOG:  listening on IPv6 address "::1", port 5432
+2019-04-01 18:26:46.079 EDT [77619] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2019-04-01 18:26:46.079 EDT [77619] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2019-04-01 18:26:46.097 EDT [77620] LOG:  database system was shut down at 2019-04-01 18:16:33 EDT
+2019-04-01 18:26:46.108 EDT [77619] LOG:  database system is ready to accept connections
+2019-04-01 18:26:49.003 EDT [77632] FATAL:  database "pyim" does not exist
+2019-04-01 18:26:53.360 EDT [77638] FATAL:  database "pyim" does not exist
+2019-04-01 18:28:06.145 EDT [77665] FATAL:  database "pyim" does not exist
+2019-04-01 18:34:05.090 EDT [77795] ERROR:  role "vagrant" does not exist
+2019-04-01 18:34:05.090 EDT [77795] STATEMENT:  ALTER TABLE authors OWNER TO vagrant;
+2019-04-01 18:34:05.093 EDT [77795] ERROR:  role "vagrant" does not exist
+2019-04-01 18:34:05.093 EDT [77795] STATEMENT:  ALTER TABLE books OWNER TO vagrant;
+2019-04-01 22:20:38.882 EDT [78831] ERROR:  column reference "id" is ambiguous at character 211
+2019-04-01 22:20:38.882 EDT [78831] STATEMENT:  
+	            SELECT title, pages, authors.first_name || ' ' || authors.last_name, synopsis
+	            FROM books
+	            LEFT JOIN authors
+	                ON books.author_id = authors.id
+	            WHERE id=1
+	            
+2019-04-01 22:36:40.920 EDT [79154] ERROR:  role "vagrant" does not exist
+2019-04-01 22:36:40.920 EDT [79154] STATEMENT:  ALTER TABLE authors OWNER TO vagrant;
+2019-04-01 22:36:40.937 EDT [79154] ERROR:  role "vagrant" does not exist
+2019-04-01 22:36:40.937 EDT [79154] STATEMENT:  ALTER TABLE authors OWNER TO vagrant;
+2019-04-01 22:36:40.938 EDT [79154] ERROR:  role "vagrant" does not exist
+2019-04-01 22:36:40.938 EDT [79154] STATEMENT:  ALTER TABLE books OWNER TO vagrant;
+2019-04-01 22:36:40.939 EDT [79154] ERROR:  duplicate key value violates unique constraint "authors_pkey"
+2019-04-01 22:36:40.939 EDT [79154] DETAIL:  Key (id)=(1) already exists.
+2019-04-01 22:36:40.939 EDT [79154] CONTEXT:  COPY authors, line 1
+2019-04-01 22:36:40.939 EDT [79154] STATEMENT:  COPY authors (id, last_name, first_name) FROM stdin;
+2019-04-01 22:36:40.941 EDT [79154] ERROR:  duplicate key value violates unique constraint "books_pkey"
+2019-04-01 22:36:40.941 EDT [79154] DETAIL:  Key (id)=(1) already exists.
+2019-04-01 22:36:40.941 EDT [79154] CONTEXT:  COPY books, line 1
+2019-04-01 22:36:40.941 EDT [79154] STATEMENT:  COPY books (id, title, author_id, genre, pages, synopsis, date_finished) FROM stdin;
+2019-04-01 22:37:29.472 EDT [79184] ERROR:  duplicate key value violates unique constraint "authors_pkey"
+2019-04-01 22:37:29.472 EDT [79184] DETAIL:  Key (id)=(1) already exists.
+2019-04-01 22:37:29.472 EDT [79184] CONTEXT:  COPY authors, line 1
+2019-04-01 22:37:29.472 EDT [79184] STATEMENT:  COPY authors (id, last_name, first_name) FROM stdin;
+2019-04-01 22:37:29.472 EDT [79184] ERROR:  duplicate key value violates unique constraint "genres_pkey"
+2019-04-01 22:37:29.472 EDT [79184] DETAIL:  Key (id)=(HIF) already exists.
+2019-04-01 22:37:29.472 EDT [79184] CONTEXT:  COPY genres, line 1
+2019-04-01 22:37:29.472 EDT [79184] STATEMENT:  COPY genres (id, genre) FROM stdin;
+2019-04-01 22:37:29.473 EDT [79184] ERROR:  duplicate key value violates unique constraint "books_pkey"
+2019-04-01 22:37:29.473 EDT [79184] DETAIL:  Key (id)=(1) already exists.
+2019-04-01 22:37:29.473 EDT [79184] CONTEXT:  COPY books, line 1
+2019-04-01 22:37:29.473 EDT [79184] STATEMENT:  COPY books (id, title, author_id, genre, pages, synopsis, date_finished) FROM stdin;
+2019-04-01 22:37:45.018 EDT [79196] ERROR:  syntax error at or near "catalog" at character 1
+2019-04-01 22:37:45.018 EDT [79196] STATEMENT:  catalog
+2019-04-01 22:39:01.156 EDT [79234] FATAL:  database "catalog" does not exist
+2019-04-01 22:39:25.172 EDT [79251] ERROR:  relation "books" does not exist at character 15
+2019-04-01 22:39:25.172 EDT [79251] STATEMENT:  select * from books;

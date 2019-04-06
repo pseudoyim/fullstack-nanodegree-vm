@@ -19,22 +19,27 @@ SET default_with_oids = false;
 
 -- 'authors'
 CREATE TABLE IF NOT EXISTS authors (id SERIAL PRIMARY KEY,
-										last_name TEXT,
-										first_name TEXT );
+									last_name TEXT,
+									first_name TEXT );
 
-ALTER TABLE authors OWNER TO vagrant;
+ALTER TABLE authors OWNER TO pyim;
 
+-- 'genress'
+CREATE TABLE IF NOT EXISTS genres (	id TEXT PRIMARY KEY,
+									genre TEXT );
+
+ALTER TABLE genres OWNER TO pyim;
 
 -- 'books'
 CREATE TABLE IF NOT EXISTS books (  id SERIAL PRIMARY KEY,
-										title TEXT,
-										author_id INTEGER,
-										genre TEXT,
-										pages INTEGER,
-										synopsis TEXT,
-										date_finished DATE );
+									title TEXT,
+									author_id INTEGER,
+									genre TEXT,
+									pages INTEGER,
+									synopsis TEXT,
+									date_finished DATE );
 
-ALTER TABLE books OWNER TO vagrant;
+ALTER TABLE books OWNER TO pyim;
 
 
 -- 'books' data (each row must be tab-delimited)
@@ -43,9 +48,19 @@ COPY authors (id, last_name, first_name) FROM stdin;
 2	Twain	Mark
 \.
 
+-- 'genres' data
+COPY genres (id, genre) FROM stdin;
+HIF	Historical Fiction
+NOV	Novel
+FIC	Fiction
+BIO	Biography
+MYS	Mystery
+ROM	Romance
+\.
+
 -- 'books' data
 COPY books (id, title, author_id, genre, pages, synopsis, date_finished) FROM stdin;
-1	War and Peace	1	Historical Fiction	1225	The novel chronicles the history of the French invasion of Russia and the impact of the Napoleonic era on Tsarist society through the stories of five Russian aristocratic families.	2019-01-01
-2	Anna Kerenina	1	Novel	864	A complex novel in eight parts, with more than a dozen major characters, it is spread over more than 800 pages (depending on the translation), typically contained in two volumes. It deals with themes of betrayal, faith, family, marriage, Imperial Russian society, desire, and rural vs. city life. 	2019-02-01
-3	The Adventures of Tom Sawyer	2	Novel	274	about a young boy growing up along the Mississippi River. It is set in the 1840s in the fictional town of St. Petersburg, inspired by Hannibal, Missouri, where Twain lived as a boy. In the novel Tom Sawyer has several adventures, often with his friend, Huckleberry Finn.	2019-03-01
+1	War and Peace	1	HIF	1225	The novel chronicles the history of the French invasion of Russia and the impact of the Napoleonic era on Tsarist society through the stories of five Russian aristocratic families.	2019-01-01
+2	Anna Kerenina	1	NOV	864	A complex novel in eight parts, with more than a dozen major characters, it is spread over more than 800 pages (depending on the translation), typically contained in two volumes. It deals with themes of betrayal, faith, family, marriage, Imperial Russian society, desire, and rural vs. city life. 	2019-02-01
+3	The Adventures of Tom Sawyer	2	NOV	274	about a young boy growing up along the Mississippi River. It is set in the 1840s in the fictional town of St. Petersburg, inspired by Hannibal, Missouri, where Twain lived as a boy. In the novel Tom Sawyer has several adventures, often with his friend, Huckleberry Finn.	2019-03-01
 \.

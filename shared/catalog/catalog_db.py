@@ -62,7 +62,7 @@ def get_genre_items(genre):
     return result
 
 
-def get_book_info(book_title):
+def get_book_info(book_id):
     db = psycopg2.connect(f"dbname={DBNAME}")
     c = db.cursor()
     query = f'''
@@ -70,7 +70,7 @@ def get_book_info(book_title):
             FROM books
             LEFT JOIN authors
                 ON books.author_id = authors.id
-            WHERE LOWER(title)='{book_title}'
+            WHERE books.id={book_id}
             '''
     c.execute(query)
     result = c.fetchall()
