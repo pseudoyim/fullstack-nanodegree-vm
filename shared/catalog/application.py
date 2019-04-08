@@ -49,57 +49,55 @@ def book_info(genre, book_id):
 def new_book():
     if request.method == 'POST':
         # EXAMPLE row:
-        # 1 War and Peace   1   HIF 1225    The novel chronicles the history of the French invasion of Russia and the impact of the Napoleonic era on Tsarist society through the stories of five Russian aristocratic families.    2019-01-01
+        # 1 War and Peace   1   HIF 1225    The novel chronicles the history of the French invasion of Russia and the impact of the Napoleonic era on Tsarist society through the stories of five Russian aristocratic families.    2019-01-01        
         
-        # If author is not in 'authors', add new entry to 'authors' table
         existing_authors = [i[0] for i in get_all_authors()]
-        print(existing_authors)
 
         first_name = request.form['author_first_name'].strip()
         last_name = request.form['author_last_name'].strip()
         full_name = first_name + ' ' + last_name
 
+        # If author is not in 'authors', add new entry to 'authors' table
         if full_name not in existing_authors:
             insert_author(full_name, last_name, first_name)
 
         title = request.form['title']
         author = first_name + ' ' + last_name
 
-        #
-
+        # Get the genres table and convert to dict for easier lookup.
         genres_raw = get_genres_table()
         genres_dict = {}
         for i in genres_raw:
             genres_dict[i[1]] = i[0]
 
         genre = request.form['genre'].strip()
-        print(f'GENRE:-{genre}-')
         genre_id = genres_dict[genre]
-        print('GENRE_ID: ', genre_id)
 
         pages = request.form['pages']
         synopsis = request.form['synopsis']
         date_finished = request.form['date_finished']
 
         book_content = [title, author, genre_id, pages, synopsis, date_finished]
-        print('book_content!')
-        print(book_content)
         new_book_id = insert_book(book_content)
         new_book_id = new_book_id[0][0]
         info = get_book_info(new_book_id)[0]
-        
 
+        flash(f'New book ({title}) added!')
         return render_template('book.html', info=info)
+    
     else:
         genres = [i[0] for i in get_all_genres()]
         genres = sorted(genres)
-        return render_template('newBook.html', genres=genres)
-
-
-
+        return render_template('bookInfo.html', genres=genres)
 
 
 # EDIT BOOK
+@app.route('/catalog/<genre>/<int:book_id>/edit/', methods=['GET'])
+def edit_book(genre, book_id):
+    # Returns a list containing a single tuple, so get index 0.
+    info = get_book_info(book_id)[0]
+    return render_template('book.html', book_id=book_id, info=info)
+
 
 # DELETE BOOK
 

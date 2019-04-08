@@ -117,9 +117,6 @@ def insert_author(full_name, last_name, first_name):
     db.close()
 
 def insert_book(content):
-    # 1 War and Peace   Leo Tolstoy   HIF 1225    The novel chronicles the history of the French invasion of Russia and the impact of the Napoleonic era on Tsarist society through the stories of five Russian aristocratic families.    2019-01-01
-    print('************** CONTENT:', content)
-    
     bleached = []
     for i in content:
         b = bleach.clean(i).strip()

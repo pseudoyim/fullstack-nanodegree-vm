@@ -3,7 +3,7 @@
 -- From command line, run:
 -- >>> createdb catalog
 -- >>> psql catalog < <path to this file: catalog.sql>
---
+-- PASSWORD: abcd
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -36,10 +36,6 @@ CREATE TABLE IF NOT EXISTS books (  id SERIAL PRIMARY KEY,
 									date_finished DATE,
 									UNIQUE (title, author));
 
--- Modify initial value and increment
-ALTER SEQUENCE books_id_seq RESTART WITH 4;
-
-
 -- 'books' data (each row must be tab-delimited)
 COPY authors (full_name, last_name, first_name) FROM stdin;
 Leo Tolstoy	Tolstoy	Leo
@@ -64,3 +60,6 @@ COPY books (id, title, author, genre_id, pages, synopsis, date_finished) FROM st
 2	Anna Kerenina	Leo Tolstoy	NOV	864	A complex novel in eight parts, with more than a dozen major characters, it is spread over more than 800 pages (depending on the translation), typically contained in two volumes. It deals with themes of betrayal, faith, family, marriage, Imperial Russian society, desire, and rural vs. city life. 	2019-02-01
 3	The Adventures of Tom Sawyer	Mark Twain	NOV	274	about a young boy growing up along the Mississippi River. It is set in the 1840s in the fictional town of St. Petersburg, inspired by Hannibal, Missouri, where Twain lived as a boy. In the novel Tom Sawyer has several adventures, often with his friend, Huckleberry Finn.	2019-03-01
 \.
+
+-- Modify initial value for serial primary key in books.
+ALTER SEQUENCE books_id_seq RESTART WITH 4;
