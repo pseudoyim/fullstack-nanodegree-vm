@@ -162,7 +162,6 @@ def new_book():
             flash('New book added!')
             return render_template('book.html', info=info)
 
-        # Will fail if user attempts to add duplicate entry for a book and author pair.
         except Exception as error:
             session.rollback()
             raise
@@ -174,11 +173,77 @@ def new_book():
 
 
 
+def lookup_author_id(first_name, last_name):
+    result = session.execute('''
+        SELECT id
+        FROM authors
+        WHERE last_name = '{}' AND
+        first_name = '{}';
+        '''.format(last_name, first_name))
+    return list(result)[0][0]
+
+
+def lookup_genre_id(genre):
+    print('arg genre:', genre)
+    result = session.execute('''
+        SELECT id
+        FROM genres
+        WHERE genre = '{}';
+        '''.format(genre))
+    result = list(result)[0][0]
+    print(type(result))
+    return result
+
+
+def add_author(first_name, last_name):
+    new_author = Authors(first_name=first_name, last_name=last_name)
+    session.add(new_author)
+    session.commit()
+    return session.execute(f"SELECT MAX(id) FROM authors;")
+
+
+
 # EDIT BOOK
 @app.route('/catalog/<genre>/<int:book_id>/edit', methods=['GET', 'POST'])
 def edit_book(genre, book_id):
+    book = session.query(Books).filter_by(id=book_id).one()
+    
     if request.method == 'POST':
-        pass
+        
+        # Then the queried row gets that new 'name' value.
+        book.title = request.form['title']
+
+        first_name = request.form['author_first_name'].strip()
+        last_name = request.form['author_last_name'].strip()
+        existing_author_id = lookup_author_id(first_name, last_name)
+        if existing_author_id:
+            book.author_id = existing_author_id
+        else:
+            new_author_id = add_author(first_name, last_name)
+            book.author_id = new_author_id
+
+        genre = request.form['genre']
+        print("GENRE from form: ", genre)
+        book.genre_id = lookup_genre_id(genre)
+        
+        book.pages = request.form['pages']
+        book.synopsis = request.form['synopsis']
+        book.date_finished = request.form['date_finished']
+        
+        try:        
+            session.add(book)
+            session.commit()
+            flash('Book successfully edited!')
+            print('flash should have happened just now')
+            
+            info = list(session.execute(q_book_info.format(book_id)))
+            # Returns a list containing a single tuple, so get index 0.
+            info = info[0]
+            return render_template('book.html', book_id=book_id, info=info)
+
+        except Exception as error:
+            session.rollback()
+            raise
 
     else:
         edit_book_info = session.execute(q_edit_book_info.format(book_id))
@@ -200,6 +265,22 @@ def edit_book(genre, book_id):
         genres = sorted([i[0] for i in genres])
 
         return render_template('editBook.html', book_info=book_info, genres=genres)
+
+
+# DELETE BOOK
+@app.route('/catalog/<genre>/<int:book_id>/delete', methods=['GET', 'POST'])
+def delete_book(genre, book_id):
+    book = session.query(Books).filter_by(id=book_id).one()
+    if request.method == 'POST':
+        session.delete(book)
+        session.commit()
+        flash('Book successfully DELETED!')
+        return redirect(url_for('genre_items', genre=genre))
+    else:
+        info = list(session.execute(q_book_info.format(book_id)))
+        # Returns a list containing a single tuple, so get index 0.
+        info = info[0]
+        return render_template('deleteBook.html', genre=genre, book_id=book_id, info=info)
 
 
 
