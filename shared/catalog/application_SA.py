@@ -72,6 +72,18 @@ q_edit_book_info = '''
     WHERE books.id={}
     '''
 
+#JSON API ENDPOINTS
+@app.route('/catalog/<genre>/<int:book_id>/json')
+def books_json(genre, book_id):
+    books = session.query(Books).filter_by(id=book_id).all()
+    return jsonify(Books=[i.serialize for i in books])
+
+
+@app.route('/catalog/json')
+def catalog_json():
+    items = session.query(Books).all()
+    return jsonify(Books=[i.serialize for i in items])
+
 
 @app.route('/')
 @app.route('/catalog/')
