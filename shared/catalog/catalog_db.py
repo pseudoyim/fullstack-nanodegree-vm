@@ -1,3 +1,6 @@
+# OBSOLETE. 
+# See databse_setup.py (using SQLAlchemy instead of psycopg2).
+
 # "Database code" for the DB Forum.
 
 import bleach
